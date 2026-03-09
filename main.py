@@ -1,16 +1,20 @@
-# This is a sample Python script.
+from typing import List
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from openai import OpenAI
+from openai.types.chat import ChatCompletionMessageParam
 
+from prompt import PROMPT
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+client = OpenAI()
 
+messages: List[ChatCompletionMessageParam] = [
+    {"role": "system", "content": PROMPT},
+    {"role": "user", "content": ""}
+]
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+response = client.chat.completions.create(
+    model="gpt-4.1-mini",
+    messages=messages
+)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(response.choices[0].message.content)
